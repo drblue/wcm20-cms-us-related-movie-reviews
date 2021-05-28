@@ -34,6 +34,7 @@ function wrmr_shortcode($user_atts = [], $content = null, $tag = '') {
 	$user_atts = array_change_key_case((array)$user_atts, CASE_LOWER);
 
 	$default_atts = [
+		'genres' => null,
 		'title' => __('Related Movie Reviews', 'wrmr'),
 	];
 
@@ -42,9 +43,12 @@ function wrmr_shortcode($user_atts = [], $content = null, $tag = '') {
 	// Add title to output
 	$output = sprintf('<h2 class="related-movie-reviews-heading">%s</h2>', $atts['title']);
 
-	$reviews = wrmr_get_related_movie_reviews();
+	// $atts['genres'] = null|"genre,genre"
+	// $output .= "<pre>" . print_r($atts, true) . "</pre>";
+
+	$reviews = wrmr_get_related_movie_reviews($atts['genres']);
 	if (!empty($reviews)) {
-		$output .= '<div class="related-movie-reviews>';
+		$output .= '<div class="related-movie-reviews">';
 
 		foreach ($reviews as $review) {
 			$output .= sprintf(
@@ -73,17 +77,22 @@ function wrmr_shortcode($user_atts = [], $content = null, $tag = '') {
  *
  * @return array
  */
-function wrmr_get_related_movie_reviews() {
+function wrmr_get_related_movie_reviews($genre_slugs) {
 	// get current post id
 	$post_id = get_the_ID();
 
-	// get the current post's genres
-	$genres = get_the_terms($post_id, 'mbt_movie_genre');
+	if (is_null($genre_slugs)) {
+		// get the current post's genres
+		$genres = get_the_terms($post_id, 'mbt_movie_genre');
 
-	// transform genres to simple array of slugs
-	$genre_slugs = array_map(function($genre) {
-		return $genre->slug;
-	}, $genres);
+		// transform genres to simple array of slugs
+		$genre_slugs = array_map(function($genre) {
+			return $genre->slug;
+		}, $genres);
+	} else {
+		// extract genre slugs from string
+		$genre_slugs = explode(',', $genre_slugs);
+	}
 
 	// query for related movie reviews
 	$query = new WP_Query([
