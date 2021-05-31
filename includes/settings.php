@@ -65,6 +65,20 @@ function wrmr_settings() {
 		'wrmr_settings_section_general',	// Callback for rendering content below the section title and above the settings fields
 		'wrmr-settings'						// Page to add this settings section to (slug of what we added using `add_options_page()`)
 	);
+
+	/**
+	 * Add Settings Fields to Settings Section 'General Options'
+	 */
+
+	// Default title
+	add_settings_field(
+		'wrmr_default_title',		// ID
+		'Default Title',			// Label
+		'wrmr_default_title_cb',	// Callback for rendering form field
+		'wrmr-settings',			// Page to add settings field to (slug of what we added using `add_options_page()`)
+		'wrmr-general-options'		// Section to add settings field to (ID of what we added using `add_settings_section()`)
+	);
+	register_setting('wrmr-general-options', 'wrmr_default_title');
 }
 add_action('admin_init', 'wrmr_settings');
 
@@ -76,5 +90,21 @@ add_action('admin_init', 'wrmr_settings');
 function wrmr_settings_section_general() {
 	?>
 		<p>This is a very nice section. Probably the nicest section ever.</p>
+	<?php
+}
+
+/**
+ * Render settings field 'wrmr_default_title'
+ *
+ * @return void
+ */
+function wrmr_default_title_cb() {
+	?>
+		<input
+			type="text"
+			id="wrmr_default_title"
+			name="wrmr_default_title"
+			value="<?php echo get_option('wrmr_default_title', __('Related Movie Reviews', 'wrmr')); ?>"
+		>
 	<?php
 }
