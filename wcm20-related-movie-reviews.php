@@ -90,7 +90,7 @@ function wrmr_shortcode($user_atts = [], $content = null, $tag = '') {
  *
  * @return array
  */
-function wrmr_get_related_movie_reviews($genre_slugs = null) {
+function wrmr_get_related_movie_reviews($genre_slugs = null, $posts_per_page = 3) {
 	// get current post id
 	$post_id = get_the_ID();
 
@@ -109,7 +109,7 @@ function wrmr_get_related_movie_reviews($genre_slugs = null) {
 
 	// query for related movie reviews
 	$query = new WP_Query([
-		'posts_per_page' => 3,
+		'posts_per_page' => $posts_per_page,
 		'post_type' => 'mbt_movie_review',
 		'post__not_in' => [$post_id],
 		'tax_query' => [

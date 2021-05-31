@@ -35,7 +35,8 @@ class RelatedMovieReviewsWidget extends WP_Widget {
 			echo $args['before_title'] . $instance['title'] . $args['after_title'];
 		}
 
-		$reviews = wrmr_get_related_movie_reviews();
+		$nbr_posts = $instance['nbr_posts'] ?? self::DEFAULT_NBR_POSTS_TO_SHOW;
+		$reviews = wrmr_get_related_movie_reviews(null, $nbr_posts);
 		if (count($reviews) > 0) {
 			$output = '<ul class="related-movie-reviews-list">';
 
@@ -53,39 +54,6 @@ class RelatedMovieReviewsWidget extends WP_Widget {
 		} else {
 			$output = "<p><em>Sorry, no related movie reviews found.</em></p>";
 		}
-
-		/*
-		// get latest posts
-		$posts = new WP_Query([
-			'posts_per_page' => $instance['nbr_posts'] ?? self::DEFAULT_NBR_POSTS_TO_SHOW,
-		]);
-
-		if ($posts->have_posts()) {
-			$output = '<ul class="latest-posts-list">';
-
-			// loop over available posts
-			while ($posts->have_posts()) {
-				$posts->the_post();
-
-				$output .= sprintf(
-					'<li class="latest-post-list-item"><a href="%s">%s</a> <small>in %s %s %s ago</small></li>',
-					get_the_permalink(),
-					get_the_title(),
-					get_the_category_list(', '),
-					isset($instance['show_author']) ? 'by ' . get_the_author() : '',
-					human_time_diff(get_the_date('U'), current_time('timestamp'))
-				);
-			}
-
-			// reset postdata
-			wp_reset_postdata();
-
-			$output .= "</ul>";
-
-		} else {
-			$output = "<p><em>Sorry, no related movie reviews found.</em></p>";
-		}
-		*/
 
 		// output latest posts
 		echo $output;
