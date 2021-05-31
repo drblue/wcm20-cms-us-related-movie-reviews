@@ -12,6 +12,19 @@
 define('WRMR_SHORTCODE_TAG', 'related-movie-reviews');
 
 /**
+ * Include dependencies.
+ */
+require('class.RelatedMovieReviewsWidget.php');
+
+/**
+ * Register widget(s)
+ */
+function wrmr_widgets_init() {
+	register_widget('RelatedMovieReviewsWidget');
+}
+add_action('widgets_init', 'wrmr_widgets_init');
+
+/**
  * Register plugin shortcodes
  */
 function wrmr_init() {
@@ -77,7 +90,7 @@ function wrmr_shortcode($user_atts = [], $content = null, $tag = '') {
  *
  * @return array
  */
-function wrmr_get_related_movie_reviews($genre_slugs) {
+function wrmr_get_related_movie_reviews($genre_slugs = null) {
 	// get current post id
 	$post_id = get_the_ID();
 
