@@ -36,16 +36,45 @@ function wrmr_settings_page() {
 			<h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 			<form action="options.php" method="post">
 				<?php
-					// output security fields for the registered setting "wrmr_options"
-					settings_fields('wrmr_options');
+					// output security fields for the registered settings section "wrmr-general-options"
+					settings_fields('wrmr-general-options');
 
-					// output setting sections and their fields
-					do_settings_sections('wrmr');
+					// output setting sections and their fields for page 'wrmr-settings'
+					do_settings_sections('wrmr-settings');
 
 					// output save settings button
 					submit_button(__('Save Settings', 'wrmr'));
 				?>
 			</form>
 		</div>
+	<?php
+}
+
+/**
+ * Register all options for our settings page
+ *
+ * @return void
+ */
+function wrmr_settings() {
+	/**
+	 * Add Settings Section 'General Options'
+	 */
+	add_settings_section(
+		'wrmr-general-options',				// ID
+		'General Options',					// Title
+		'wrmr_settings_section_general',	// Callback for rendering content below the section title and above the settings fields
+		'wrmr-settings'						// Page to add this settings section to (slug of what we added using `add_options_page()`)
+	);
+}
+add_action('admin_init', 'wrmr_settings');
+
+/**
+ * Content below section title 'General Options' and above the settings fields
+ *
+ * @return void
+ */
+function wrmr_settings_section_general() {
+	?>
+		<p>This is a very nice section. Probably the nicest section ever.</p>
 	<?php
 }
