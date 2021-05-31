@@ -27,6 +27,10 @@ class RelatedMovieReviewsWidget extends WP_Widget {
 	 * @return void
 	 */
 	public function widget($args, $instance) {
+		if (!(is_single() && get_post_type() === 'mbt_movie_review')) {
+			return;
+		}
+
 		// start widget
 		echo $args['before_widget'];
 
