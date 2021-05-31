@@ -16,5 +16,6 @@ define('WRMR_SHORTCODE_TAG', 'related-movie-reviews');
  * Include dependencies.
  */
 require_once(WRMR_PLUGIN_DIR . 'includes/functions.php');
+require_once(WRMR_PLUGIN_DIR . 'includes/settings.php');
 require_once(WRMR_PLUGIN_DIR . 'includes/shortcodes.php');
 require_once(WRMR_PLUGIN_DIR . 'includes/widgets.php');
