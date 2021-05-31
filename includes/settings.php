@@ -79,6 +79,16 @@ function wrmr_settings() {
 		'wrmr-general-options'		// Section to add settings field to (ID of what we added using `add_settings_section()`)
 	);
 	register_setting('wrmr-general-options', 'wrmr_default_title');
+
+	// Number of posts to show
+	add_settings_field(
+		'wrmr_posts_to_show',		// ID
+		'Number of posts to show',	// Label
+		'wrmr_posts_to_show_cb',	// Callback for rendering form field
+		'wrmr-settings',			// Page to add settings field to (slug of what we added using `add_options_page()`)
+		'wrmr-general-options'		// Section to add settings field to (ID of what we added using `add_settings_section()`)
+	);
+	register_setting('wrmr-general-options', 'wrmr_posts_to_show');
 }
 add_action('admin_init', 'wrmr_settings');
 
@@ -105,6 +115,23 @@ function wrmr_default_title_cb() {
 			id="wrmr_default_title"
 			name="wrmr_default_title"
 			value="<?php echo get_option('wrmr_default_title', __('Related Movie Reviews', 'wrmr')); ?>"
+		>
+	<?php
+}
+
+/**
+ * Render settings field 'wrmr_posts_to_show'
+ *
+ * @return void
+ */
+function wrmr_posts_to_show_cb() {
+	?>
+		<input
+			type="number"
+			min=1
+			id="wrmr_posts_to_show"
+			name="wrmr_posts_to_show"
+			value="<?php echo get_option('wrmr_posts_to_show', 3); ?>"
 		>
 	<?php
 }

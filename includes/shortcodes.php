@@ -24,7 +24,7 @@ function wrmr_shortcode($user_atts = [], $content = null, $tag = '') {
 
 	$default_atts = [
 		'genres' => null,
-		'title' => __('Related Movie Reviews', 'wrmr'),
+		'title' => get_option('wrmr_default_title', __('Related Movie Reviews', 'wrmr')),
 	];
 
 	$atts = shortcode_atts($default_atts, $user_atts, WRMR_SHORTCODE_TAG);
@@ -35,7 +35,8 @@ function wrmr_shortcode($user_atts = [], $content = null, $tag = '') {
 	// $atts['genres'] = null|"genre,genre"
 	// $output .= "<pre>" . print_r($atts, true) . "</pre>";
 
-	$reviews = wrmr_get_related_movie_reviews($atts['genres']);
+	$posts_to_show = get_option('wrmr_posts_to_show', 3);
+	$reviews = wrmr_get_related_movie_reviews($atts['genres'], $posts_to_show);
 	if (!empty($reviews)) {
 		$output .= '<div class="related-movie-reviews">';
 

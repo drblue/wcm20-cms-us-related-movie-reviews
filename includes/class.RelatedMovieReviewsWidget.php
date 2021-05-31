@@ -77,10 +77,14 @@ class RelatedMovieReviewsWidget extends WP_Widget {
 	public function form($instance) {
 
 		// do we have a title set? if so, use it, otherwise set empty title
-		$title = isset($instance['title']) ? $instance['title'] : __('Related Reviews', 'wrmr');
+		$title = isset($instance['title'])
+			? $instance['title']
+			: get_option('wrmr_default_title', __('Related Reviews', 'wrmr'));
 
-		// do we have number of posts to show set? if so, use it, otherwise set default to 3
-		$nbr_posts = isset($instance['nbr_posts']) ? $instance['nbr_posts'] : self::DEFAULT_NBR_POSTS_TO_SHOW;
+		// do we have number of posts to show set? if so, use it, otherwise get option and default to 3
+		$nbr_posts = isset($instance['nbr_posts'])
+			? $instance['nbr_posts']
+			: get_option('wrmr_posts_to_show', self::DEFAULT_NBR_POSTS_TO_SHOW);
 
 		?>
 			<!-- title -->
@@ -129,7 +133,7 @@ class RelatedMovieReviewsWidget extends WP_Widget {
 
 		$instance['nbr_posts'] = (!empty($new_instance['nbr_posts']))
 			? $new_instance['nbr_posts']
-			: self::DEFAULT_NBR_POSTS_TO_SHOW;
+			: get_option('wrmr_posts_to_show', self::DEFAULT_NBR_POSTS_TO_SHOW);
 
 		return $instance;
 	}
