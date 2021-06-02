@@ -8,8 +8,10 @@
  * @return string
  */
 function wrmr_filter_the_content($content) {
-	if (is_single() && get_post_type() === 'mbt_movie_review' && get_option('wrmr_add_to_posts')) {
-		$content .= wrmr_shortcode();
+	if (!is_admin() && is_single() && get_post_type() === 'mbt_movie_review' && get_option('wrmr_add_to_posts')) {
+		if (!has_shortcode($content, WRMR_SHORTCODE_TAG)) {
+			$content .= wrmr_shortcode();
+		}
 	}
 
 	return $content;
