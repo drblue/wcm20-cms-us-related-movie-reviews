@@ -12,6 +12,9 @@ function wrmr_get_related_movie_reviews($genre_slugs = null, $posts_per_page = 3
 	if (is_null($genre_slugs)) {
 		// get the current post's genres
 		$genres = get_the_terms($post_id, 'mbt_movie_genre');
+		if (!$genres) {
+			$genres = [];
+		}
 
 		// transform genres to simple array of slugs
 		$genre_slugs = array_map(function($genre) {
