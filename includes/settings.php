@@ -46,6 +46,19 @@ function wrmr_settings_page() {
 					submit_button(__('Save Settings', 'wrmr'));
 				?>
 			</form>
+
+			<?php if (wp_get_environment_type() === "development"): ?>
+				<h2>Config</h2>
+				<?php
+					echo "<pre>";
+					print_r([
+						'wrmr_default_title' => get_option('wrmr_default_title'),
+						'wrmr_posts_to_show' => get_option('wrmr_posts_to_show'),
+						'wrmr_add_to_posts' => get_option('wrmr_add_to_posts'),
+					]);
+					echo "</pre>";
+				?>
+			<?php endif; ?>
 		</div>
 	<?php
 }
@@ -89,6 +102,16 @@ function wrmr_settings() {
 		'wrmr-general-options'		// Section to add settings field to (ID of what we added using `add_settings_section()`)
 	);
 	register_setting('wrmr-general-options', 'wrmr_posts_to_show');
+
+	// Add to posts?
+	add_settings_field(
+		'wrmr_add_to_posts',		// ID
+		'Add related movie reviews to all reviews',	// Label
+		'wrmr_add_to_posts_cb',		// Callback for rendering form field
+		'wrmr-settings',			// Page to add settings field to (slug of what we added using `add_options_page()`)
+		'wrmr-general-options'		// Section to add settings field to (ID of what we added using `add_settings_section()`)
+	);
+	register_setting('wrmr-general-options', 'wrmr_add_to_posts');
 }
 add_action('admin_init', 'wrmr_settings');
 
@@ -132,6 +155,24 @@ function wrmr_posts_to_show_cb() {
 			id="wrmr_posts_to_show"
 			name="wrmr_posts_to_show"
 			value="<?php echo get_option('wrmr_posts_to_show', 3); ?>"
+		>
+	<?php
+}
+
+/**
+ * Render settings field 'wrmr_posts_to_show'
+ *
+ * @return void
+ */
+function wrmr_add_to_posts_cb() {
+	?>
+		<input
+			type="checkbox"
+			id="wrmr_add_to_posts"
+			name="wrmr_add_to_posts"
+			value="1"
+			<?php //if (get_option('wrmr_add_to_posts') == "1") { echo "checked"; } ?>
+			<?php checked(get_option('wrmr_add_to_posts')); ?>
 		>
 	<?php
 }
